@@ -143,34 +143,22 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "transition": "Age_<_45",
-          "distribution": 0.589
+          "transition": "Age_<_35",
+          "distribution": 0.5
         },
         {
           "transition": "Age_>=_45",
-          "distribution": 0.41100000000000003
+          "distribution": 0.5
         }
       ]
-    },
-    "Age_<_45": {
-      "type": "Delay",
-      "distribution": {
-        "kind": "UNIFORM",
-        "parameters": {
-          "high": 44,
-          "low": 1
-        }
-      },
-      "unit": "years",
-      "direct_transition": "Has_IBS"
     },
     "Age_>=_45": {
       "type": "Delay",
       "distribution": {
         "kind": "UNIFORM",
         "parameters": {
-          "high": 85,
-          "low": 45
+          "high": 95,
+          "low": 35
         }
       },
       "unit": "years",
@@ -214,7 +202,7 @@
           "display": "Irritable bowel syndrome with diarrhea (disorder)"
         }
       ],
-      "direct_transition": "IBS-D_Symptom1",
+      "direct_transition": "Symptom_Switcher",
       "assign_to_attribute": "irritable_bowel",
       "target_encounter": "IBS_Diagnosis"
     },
@@ -227,7 +215,7 @@
           "display": "Descriptor:  Irritable bowel syndrome characterized by constipation (disorder)"
         }
       ],
-      "direct_transition": "IBS-C_Symptom1",
+      "direct_transition": "Symptom_Switcher",
       "assign_to_attribute": "irritable_bowel",
       "target_encounter": "IBS_Diagnosis"
     },
@@ -245,39 +233,15 @@
       ],
       "conditional_transition": [
         {
-          "transition": "IBS_C_Care_Plan",
+          "transition": "IBS_Care_Plan_Initiation",
           "condition": {
             "condition_type": "Attribute",
-            "attribute": "IBS_subtype",
-            "operator": "==",
-            "value": 2
+            "attribute": "ibs_care_plan",
+            "operator": "is nil"
           }
         },
         {
-          "transition": "IBS_D_Care_Plan",
-          "condition": {
-            "condition_type": "Attribute",
-            "attribute": "IBS_subtype",
-            "operator": "==",
-            "value": 1
-          }
-        },
-        {
-          "transition": "IBS_M_Care_Plan",
-          "condition": {
-            "condition_type": "Attribute",
-            "attribute": "IBS_subtype",
-            "operator": "==",
-            "value": 3
-          }
-        },
-        {
-          "condition": {
-            "condition_type": "Attribute",
-            "attribute": "IBS_subtype",
-            "operator": "==",
-            "value": 4
-          }
+          "transition": "IBS_Medication_Initiation"
         }
       ]
     },
@@ -367,7 +331,7 @@
           "display": "Care plan (record artifact)"
         }
       ],
-      "direct_transition": "Prescribe_Osmotic_Laxative",
+      "direct_transition": "IBS_Medication_Initiation",
       "reason": "Has_IBS_C",
       "activities": [
         {
@@ -380,7 +344,8 @@
           "code": 1255144000,
           "display": "Low fermentable oligosaccharide, disaccharide, monosaccharide and polyol diet (regime/therapy)"
         }
-      ]
+      ],
+      "assign_to_attribute": "ibs_care_plan"
     },
     "IBS_D_Care_Plan": {
       "type": "CarePlanStart",
@@ -391,7 +356,7 @@
           "display": "Care plan (record artifact)"
         }
       ],
-      "direct_transition": "Prescribe_Antidiarrheal",
+      "direct_transition": "IBS_Medication_Initiation",
       "reason": "Has_IBS_D",
       "activities": [
         {
@@ -409,7 +374,8 @@
           "code": 437061000124108,
           "display": "Decreased insoluble fiber diet (regime/therapy)"
         }
-      ]
+      ],
+      "assign_to_attribute": "ibs_care_plan"
     },
     "Prescribe_Osmotic_Laxative": {
       "type": "MedicationOrder",
@@ -601,12 +567,12 @@
       "distribution": {
         "kind": "UNIFORM",
         "parameters": {
-          "high": 36,
-          "low": 6
+          "high": 6,
+          "low": 3
         }
       },
       "unit": "months",
-      "direct_transition": "Living_with_Chronic_IBS"
+      "direct_transition": "Symptom_Switcher"
     },
     "IBS_D_Remission": {
       "type": "ConditionEnd",
@@ -633,7 +599,7 @@
           "display": "Irritable bowel syndrome characterized by alternating bowel habit (disorder)"
         }
       ],
-      "direct_transition": "IBS-C_Symptom1",
+      "direct_transition": "Symptom_Switcher",
       "assign_to_attribute": "irritable_bowel",
       "target_encounter": "IBS_Diagnosis"
     },
@@ -659,21 +625,133 @@
           "display": "General healthful diet (regime/therapy)"
         }
       ],
-      "distributed_transition": [
-        {
-          "transition": "Prescribe_Antidiarrheal",
-          "distribution": 0.5
-        },
-        {
-          "transition": "Prescribe_Osmotic_Laxative",
-          "distribution": 0.5
-        }
-      ]
+      "assign_to_attribute": "ibs_care_plan",
+      "direct_transition": "IBS_Medication_Initiation"
     },
     "IBS_M_Remission": {
       "type": "ConditionEnd",
       "condition_onset": "Has_IBS_M",
       "direct_transition": "Terminal"
+    },
+    "Age_<_35": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 34,
+          "low": 1
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Has_IBS"
+    },
+    "Symptom_Switcher": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "IBS-D_Symptom1",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 1
+          }
+        },
+        {
+          "transition": "IBS-C_Symptom1"
+        }
+      ]
+    },
+    "IBS_Care_Plan_Initiation": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "IBS_C_Care_Plan",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 2
+          }
+        },
+        {
+          "transition": "IBS_D_Care_Plan",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 1
+          }
+        },
+        {
+          "transition": "IBS_M_Care_Plan",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 3
+          }
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 4
+          }
+        }
+      ]
+    },
+    "IBS_Medication_Initiation": {
+      "type": "Simple",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 1
+          },
+          "distributions": [
+            {
+              "transition": "Prescribe_Antidiarrheal",
+              "distribution": 1
+            }
+          ]
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 2
+          },
+          "distributions": [
+            {
+              "transition": "Prescribe_Osmotic_Laxative",
+              "distribution": 1
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "transition": "Prescribe_Osmotic_Laxative",
+              "distribution": 0.5
+            },
+            {
+              "transition": "Prescribe_Antidiarrheal",
+              "distribution": 0.5
+            }
+          ],
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 3
+          }
+        }
+      ]
     }
   },
   "gmf_version": 2
