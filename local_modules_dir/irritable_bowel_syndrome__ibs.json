@@ -31,11 +31,11 @@
       "distributed_transition": [
         {
           "transition": "Pre_IBS",
-          "distribution": 0.0333
+          "distribution": 0.136
         },
         {
           "transition": "Terminal",
-          "distribution": 0.9666999999999999
+          "distribution": 0.8639999999999999
         }
       ]
     },
@@ -44,11 +44,11 @@
       "distributed_transition": [
         {
           "transition": "Pre_IBS",
-          "distribution": 0.0667
+          "distribution": 0.272
         },
         {
           "transition": "Terminal",
-          "distribution": 0.9333
+          "distribution": 0.728
         }
       ]
     },
