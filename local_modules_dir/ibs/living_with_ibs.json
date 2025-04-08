@@ -1,0 +1,467 @@
+{
+  "name": "living_with_ibs",
+  "remarks": [
+    "A blank module"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Initialize_Loop_Counter"
+    },
+    "IBS_Constipation": {
+      "type": "Symptom",
+      "symptom": "Chronic Constipation",
+      "cause": "",
+      "probability": 1,
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 50,
+          "low": 10
+        }
+      },
+      "direct_transition": "IBS_Abdominal_Pain"
+    },
+    "IBS_Diarrhea": {
+      "type": "Symptom",
+      "symptom": "Chronic Diarrhea",
+      "cause": "",
+      "probability": 1,
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 50,
+          "low": 10
+        }
+      },
+      "direct_transition": "IBS_Abdominal_Pain"
+    },
+    "IBS_Abdominal_Pain": {
+      "type": "Symptom",
+      "symptom": "Chronic Abdominal Pain",
+      "cause": "",
+      "probability": 1,
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 100,
+          "low": 50
+        }
+      },
+      "direct_transition": "IBS_Bloating"
+    },
+    "IBS_Bloating": {
+      "type": "Symptom",
+      "symptom": "Chronic Bloating/Gas",
+      "cause": "",
+      "probability": 0.5,
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 50,
+          "low": 10
+        }
+      },
+      "direct_transition": "Chronic_Symptom_Period"
+    },
+    "IBS_Follow_Up_Encounter": {
+      "type": "Encounter",
+      "telemedicine_possibility": "none",
+      "direct_transition": "IBS_Medication_Review",
+      "wellness": true
+    },
+    "Chronic_Symptom_Period": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 48,
+          "low": 12
+        }
+      },
+      "unit": "months",
+      "direct_transition": "IBS_Follow_Up_Encounter"
+    },
+    "IBS_Medication_Review": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 182836005,
+          "display": "Review of medication (procedure)"
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 60,
+          "low": 30
+        }
+      },
+      "unit": "minutes",
+      "reason": "Select Condition/Enter Attribute",
+      "direct_transition": "IBS_AntiDiarrheal_Switch"
+    },
+    "Prescribe_Immodium": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 978004,
+          "display": "loperamide hydrochloride 2 MG [Imodium]"
+        }
+      ],
+      "chronic": false,
+      "administration": false,
+      "direct_transition": "IBS_Laxative_Switch",
+      "assign_to_attribute": "ibs_antidia"
+    },
+    "Prescribe_Miralax": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 1870384,
+          "display": "polyethylene glycol 3350 17000 MG [Miralax]"
+        }
+      ],
+      "chronic": false,
+      "direct_transition": "IBS_Antichol_Switch",
+      "assign_to_attribute": "ibs_osmotic_lax"
+    },
+    "Prescribe_GasX_NORMAL": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 570808,
+          "display": "simethicone 80 MG [Gas-X]"
+        }
+      ],
+      "direct_transition": "End_IBS_Follow_Up_Encounter",
+      "chronic": false,
+      "assign_to_attribute": "ibs_antigas"
+    },
+    "Prescribe_GasX_MAX": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 2119392,
+          "display": "simethicone 250 MG [Gas-X]"
+        }
+      ],
+      "direct_transition": "End_IBS_Follow_Up_Encounter",
+      "chronic": false,
+      "assign_to_attribute": "ibs_antigas"
+    },
+    "Prescribe_GasX_EXTRA": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 2591359,
+          "display": "simethicone 125 MG [Gas-X]"
+        }
+      ],
+      "direct_transition": "End_IBS_Follow_Up_Encounter",
+      "chronic": false,
+      "assign_to_attribute": "ibs_antigas"
+    },
+    "Prescribe_GasX_ULTRA": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 860053,
+          "display": "simethicone 180 MG [Gas-X]"
+        }
+      ],
+      "direct_transition": "End_IBS_Follow_Up_Encounter",
+      "assign_to_attribute": "ibs_antigas"
+    },
+    "Prescribe_Dycyclomine": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 991086,
+          "display": "dicyclomine HCl 20 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "IBS_AntiGas_Switch",
+      "chronic": false,
+      "assign_to_attribute": "ibs_antichol"
+    },
+    "Prescribe_Hyoscyamine": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 1046985,
+          "display": "hyoscyamine sulfate 0.125 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "IBS_AntiGas_Switch",
+      "chronic": false,
+      "assign_to_attribute": "ibs_antichol"
+    },
+    "IBS_AntiGas_Switch": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "End_Existing_Antigas",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "ibs_antigas",
+            "operator": "is not nil"
+          }
+        },
+        {
+          "transition": "IBS_AntiGas_Symptom_Switch"
+        }
+      ]
+    },
+    "IBS_AntiDiarrheal_Switch": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "End_Existing_Immodium",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "ibs_antidia",
+            "operator": "is not nil"
+          }
+        },
+        {
+          "transition": "Prescribe_Immodium",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Diarrhea",
+            "operator": ">=",
+            "value": 30
+          }
+        },
+        {
+          "transition": "IBS_Laxative_Switch"
+        }
+      ]
+    },
+    "IBS_Laxative_Switch": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "End_Existing_Miralax",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "ibs_osmotic_lax",
+            "operator": "is not nil"
+          }
+        },
+        {
+          "transition": "Prescribe_Miralax",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Constipation",
+            "operator": ">=",
+            "value": 30
+          }
+        },
+        {
+          "transition": "IBS_Antichol_Switch"
+        }
+      ]
+    },
+    "IBS_Antichol_Switch": {
+      "type": "Simple",
+      "direct_transition": "End_Existing_Anticholinergic"
+    },
+    "End_Existing_Immodium": {
+      "type": "MedicationEnd",
+      "referenced_by_attribute": "ibs_antidia",
+      "conditional_transition": [
+        {
+          "transition": "Prescribe_Immodium",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Diarrhea",
+            "operator": ">=",
+            "value": 30
+          }
+        },
+        {
+          "transition": "IBS_Laxative_Switch"
+        }
+      ]
+    },
+    "End_Existing_Miralax": {
+      "type": "MedicationEnd",
+      "referenced_by_attribute": "ibs_osmotic_lax",
+      "conditional_transition": [
+        {
+          "transition": "Prescribe_Miralax",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Constipation",
+            "operator": ">=",
+            "value": 30
+          }
+        },
+        {
+          "transition": "IBS_Antichol_Switch"
+        }
+      ]
+    },
+    "End_Existing_Anticholinergic": {
+      "type": "MedicationEnd",
+      "distributed_transition": [
+        {
+          "transition": "Prescribe_Dycyclomine",
+          "distribution": 0.5
+        },
+        {
+          "transition": "Prescribe_Hyoscyamine",
+          "distribution": 0.5
+        }
+      ],
+      "referenced_by_attribute": "ibs_antichol"
+    },
+    "IBS_AntiGas_Symptom_Switch": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "Prescribe_GasX_MAX",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Bloating/Gas",
+            "operator": ">=",
+            "value": 40
+          }
+        },
+        {
+          "transition": "Prescribe_GasX_ULTRA",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Bloating/Gas",
+            "operator": ">=",
+            "value": 30
+          }
+        },
+        {
+          "transition": "Prescribe_GasX_EXTRA",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Bloating/Gas",
+            "operator": ">=",
+            "value": 20
+          }
+        },
+        {
+          "transition": "Prescribe_GasX_NORMAL",
+          "condition": {
+            "condition_type": "Symptom",
+            "symptom": "Chronic Bloating/Gas",
+            "operator": ">=",
+            "value": 10
+          }
+        },
+        {
+          "transition": "End_IBS_Follow_Up_Encounter"
+        }
+      ]
+    },
+    "End_Existing_Antigas": {
+      "type": "MedicationEnd",
+      "direct_transition": "IBS_AntiGas_Symptom_Switch",
+      "referenced_by_attribute": "ibs_antigas"
+    },
+    "End_IBS_Follow_Up_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Update_Loop_Counter"
+    },
+    "Update_Loop_Counter": {
+      "type": "Counter",
+      "attribute": "ibs_loop_count",
+      "action": "increment",
+      "direct_transition": "Loop_Count_Guard"
+    },
+    "Subtype_Switch": {
+      "type": "Simple",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 1
+          },
+          "distributions": [
+            {
+              "transition": "IBS_Diarrhea",
+              "distribution": 1
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "transition": "IBS_Constipation",
+              "distribution": 1
+            }
+          ],
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 2
+          }
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "IBS_subtype",
+            "operator": "==",
+            "value": 3
+          },
+          "distributions": [
+            {
+              "transition": "IBS_Constipation",
+              "distribution": 0.5
+            },
+            {
+              "transition": "IBS_Diarrhea",
+              "distribution": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    "Initialize_Loop_Counter": {
+      "type": "SetAttribute",
+      "attribute": "ibs_loop_count",
+      "direct_transition": "Loop_Count_Guard",
+      "value": 0
+    },
+    "Loop_Count_Guard": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "Subtype_Switch",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "loop_count",
+            "operator": "<",
+            "value": 5
+          }
+        },
+        {
+          "transition": "Terminal"
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  },
+  "gmf_version": 2
+}

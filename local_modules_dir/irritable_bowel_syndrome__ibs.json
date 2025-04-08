@@ -1,7 +1,12 @@
 {
   "name": "Irritable Bowel Syndrome (IBS)",
   "remarks": [
-    "A blank module"
+    "Custom module for modeling Irritable Bowel Syndrome with three subtypes",
+    "- IBS C: IBS with constipation",
+    "- IBS D: IBS with diarrhea",
+    "- IBS M: IBS of mixed/alternating bowel habit (diarrhea and constipation)",
+    "",
+    ""
   ],
   "states": {
     "Initial": {
@@ -60,7 +65,7 @@
       "distribution": {
         "kind": "UNIFORM",
         "parameters": {
-          "high": 150,
+          "high": 100,
           "low": 50
         }
       },
@@ -212,7 +217,7 @@
         {
           "system": "SNOMED-CT",
           "code": 440630006,
-          "display": "Descriptor:  Irritable bowel syndrome characterized by constipation (disorder)"
+          "display": "Irritable bowel syndrome characterized by constipation (disorder)"
         }
       ],
       "direct_transition": "Symptom_Switcher",
@@ -263,7 +268,7 @@
       "codes": [
         {
           "system": "RxNorm",
-          "code": "Hyoscyamine",
+          "code": 1046985,
           "display": "hyoscyamine sulfate 0.125 MG Oral Tablet"
         }
       ],
@@ -289,7 +294,8 @@
             "value": 10
           }
         }
-      ]
+      ],
+      "reason": "irritable_bowel"
     },
     "Order_for_Dicyclomine": {
       "type": "MedicationOrder",
@@ -320,7 +326,8 @@
             "value": 10
           }
         }
-      ]
+      ],
+      "reason": "irritable_bowel"
     },
     "IBS_C_Care_Plan": {
       "type": "CarePlanStart",
@@ -387,7 +394,7 @@
         }
       ],
       "direct_transition": "Prescribe_Anticholinergic",
-      "reason": "Has_IBS_C",
+      "reason": "irritable_bowel",
       "assign_to_attribute": "ibs_osmotic_lax"
     },
     "Prescribe_Antidiarrheal": {
@@ -400,7 +407,8 @@
         }
       ],
       "direct_transition": "Prescribe_Anticholinergic",
-      "assign_to_attribute": "ibs_antidia"
+      "assign_to_attribute": "ibs_antidia",
+      "reason": "irritable_bowel"
     },
     "Prescribe_Anti_Foaming_Agent": {
       "type": "Simple",
@@ -452,8 +460,9 @@
           "display": "simethicone 250 MG [Gas-X]"
         }
       ],
-      "assign_to_attribute": "ibs_antigas_max",
-      "direct_transition": "End_IBS_Diagnosis"
+      "assign_to_attribute": "ibs_antigas",
+      "direct_transition": "End_IBS_Diagnosis",
+      "reason": "irritable_bowel"
     },
     "Order_For_Simethicone_ULTRA": {
       "type": "MedicationOrder",
@@ -465,7 +474,8 @@
         }
       ],
       "direct_transition": "End_IBS_Diagnosis",
-      "assign_to_attribute": "ibs_antigas_ultra"
+      "assign_to_attribute": "ibs_antigas",
+      "reason": "irritable_bowel"
     },
     "Order_For_Simethicone_EXTRA": {
       "type": "MedicationOrder",
@@ -477,7 +487,8 @@
         }
       ],
       "direct_transition": "End_IBS_Diagnosis",
-      "assign_to_attribute": "ibs_antigas_extra"
+      "assign_to_attribute": "ibs_antigas",
+      "reason": "irritable_bowel"
     },
     "Order_For_Simethicone_NORMAL": {
       "type": "MedicationOrder",
@@ -489,7 +500,8 @@
         }
       ],
       "direct_transition": "End_IBS_Diagnosis",
-      "assign_to_attribute": "ibs_antigas_normal"
+      "assign_to_attribute": "ibs_antigas",
+      "reason": "irritable_bowel"
     },
     "End_IBS_Diagnosis": {
       "type": "EncounterEnd",
@@ -563,16 +575,9 @@
       ]
     },
     "Living_with_Chronic_IBS": {
-      "type": "Delay",
-      "distribution": {
-        "kind": "UNIFORM",
-        "parameters": {
-          "high": 6,
-          "low": 3
-        }
-      },
-      "unit": "months",
-      "direct_transition": "Symptom_Switcher"
+      "type": "CallSubmodule",
+      "submodule": "ibs/living_with_ibs",
+      "direct_transition": "Terminal"
     },
     "IBS_D_Remission": {
       "type": "ConditionEnd",
