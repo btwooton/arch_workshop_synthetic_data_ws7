@@ -49,12 +49,12 @@ Download the latest synthea-with-dependencies.jar
 Move it to the workshop folder and optionally rename it:
 
 ```bash
-mv ~/Downloads/synthea-with-dependencies.jar synthea.jar
+mv ~/Downloads/synthea-with-dependencies.jar .
 ```
 Now you can run it with:
 
 ```bash
-java -jar synthea.jar
+java -jar synthea-with-dependencies.jar -c synthea.config -p 10
 ```
 (If java is not installed, install OpenJDK or run brew install openjdk on macOS.)
 
