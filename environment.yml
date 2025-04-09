@@ -1,0 +1,8 @@
+name: synthetic-data-generation
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - jupyter
+  - pandas
+  - conda-forge::openjdk
