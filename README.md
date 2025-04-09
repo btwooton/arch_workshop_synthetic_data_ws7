@@ -4,7 +4,7 @@
 
 ### *Option 1.* Link to Notebook in Google Colab *(preferred)*:
 
-1. [Synthetic Patient Generation with Synthea](https://colab.research.google.com/github/btwooton/arch_workshop_synthetic_data_ws7/blob/main/Run_Synthea_Simulations_Colab.ipynb)
+1. [Synthetic Patient Generation with Synthea](https://colab.research.google.com/github/expmed/arch_workshop_synthetic_data_ws7/blob/main/Run_Synthea_Simulations_Colab.ipynb)
 
 
 ### *Option 2.* Minimal Local Environment Instructions *(for Workshop Attendees who Want to Run Locally)* 
@@ -24,7 +24,7 @@ After installing, open Anaconda Prompt (Windows) or a terminal (Mac/Linux).
 If you're using Git:
 
 ```bash
-git clone https://github.com/btwooton/arch_workshop_synthetic_data_ws7.git
+git clone https://github.com/expmed/arch_workshop_synthetic_data_ws7.git
 cd arch_workshop_synthetic_data_ws7
 ```
 Or, download the ZIP from the provided link and extract it. Then navigate into the folder:
