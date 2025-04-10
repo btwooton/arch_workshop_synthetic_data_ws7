@@ -1,0 +1,237 @@
+{
+  "name": "pediatric_myopia",
+  "remarks": [
+    "A blank module"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Pediatric_Myopia_Estimated_Prevalence"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Myopia_Onset": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 57190000,
+          "display": "Myopia (disorder)"
+        }
+      ],
+      "direct_transition": "Myopia_Encounter_Eye_Exam",
+      "target_encounter": "Myopia_Encounter_Eye_Exam"
+    },
+    "Myopia_Encounter_Eye_Exam": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 36228007,
+          "display": "Ophthalmic examination and evaluation (procedure)"
+        }
+      ],
+      "distributed_transition": [
+        {
+          "transition": "Eye_Glasses",
+          "distribution": 0.75
+        },
+        {
+          "transition": "Contact_Lenses",
+          "distribution": 0.25
+        },
+        {
+          "distribution": 0.050000000000000044
+        }
+      ]
+    },
+    "Eye_Glasses": {
+      "type": "Device",
+      "code": {
+        "system": "SNOMED-CT",
+        "code": 50121007,
+        "display": "Eye glasses, device (physical object)"
+      },
+      "direct_transition": "End_Myopia_Encounter_Eye_Exam",
+      "assign_to_attribute": "myopia_glasses"
+    },
+    "Contact_Lenses": {
+      "type": "Device",
+      "code": {
+        "system": "SNOMED-CT",
+        "code": 57368009,
+        "display": "Contact lenses, device (physical object)"
+      },
+      "direct_transition": "End_Myopia_Encounter_Eye_Exam",
+      "assign_to_attribute": "myopia_contacts"
+    },
+    "End_Myopia_Encounter_Eye_Exam": {
+      "type": "EncounterEnd",
+      "direct_transition": "Preference_for_Lasik"
+    },
+    "Preference_for_Lasik": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "Lasik_Age_Guard",
+          "distribution": 0.05
+        },
+        {
+          "transition": "Terminal",
+          "distribution": 0.95
+        }
+      ]
+    },
+    "Lasik_Procedure": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 312965008,
+          "display": "Laser assisted in situ keratomileusis (procedure)"
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 90,
+          "low": 60
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "End_Lasik_Procedure_Encounter"
+    },
+    "End_Lasik_Procedure_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Terminal"
+    },
+    "Lasik_Procedure_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 312965008,
+          "display": "Laser assisted in situ keratomileusis (procedure)"
+        }
+      ],
+      "direct_transition": "Lasik_Procedure"
+    },
+    "Pediatric_Myopia_Estimated_Prevalence": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "Myopia_Age_Distribution",
+          "distribution": 0.4189
+        },
+        {
+          "transition": "Terminal",
+          "distribution": 0.5811
+        }
+      ]
+    },
+    "Myopia_Age_Distribution": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "5_to_7_years",
+          "distribution": 0.0608
+        },
+        {
+          "transition": "8_to_10_years",
+          "distribution": 0.183
+        },
+        {
+          "transition": "11_to_13_years",
+          "distribution": 0.3119
+        },
+        {
+          "transition": "14_to_16_years",
+          "distribution": 0.3783
+        },
+        {
+          "transition": "17_to_19_years",
+          "distribution": 0.06600000000000006
+        }
+      ]
+    },
+    "5_to_7_years": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 7,
+          "low": 5
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Myopia_Onset"
+    },
+    "8_to_10_years": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 8
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Myopia_Onset"
+    },
+    "11_to_13_years": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 13,
+          "low": 11
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Myopia_Onset"
+    },
+    "14_to_16_years": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 16,
+          "low": 14
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Myopia_Onset"
+    },
+    "17_to_19_years": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 19,
+          "low": 17
+        }
+      },
+      "unit": "years",
+      "direct_transition": "Myopia_Onset"
+    },
+    "Lasik_Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 18,
+        "unit": "years",
+        "value": 0
+      },
+      "direct_transition": "Lasik_Procedure_Encounter"
+    }
+  },
+  "gmf_version": 2
+}
