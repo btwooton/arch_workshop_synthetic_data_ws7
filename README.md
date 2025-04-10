@@ -1,5 +1,14 @@
 # ARCH Workshop: Generating Synthetic EHR Data for Research [WS7]
 
+### Links to Resources used During Workshop
+
+- [Synthea Generic Module Builder](https://synthetichealth.github.io/module-builder/)
+- [Synthea Github Page](https://github.com/synthetichealth/synthea)
+- [Synthea Customizer](https://synthetichealth.github.io/spt/#/customizer)
+- [Cross-sectional Pediatric Myopia Study](https://pmc.ncbi.nlm.nih.gov/articles/PMC6120514/)
+- [Google Sheet w/ Probablity Calculations for Distributed Transitions in Myopia Module](https://docs.google.com/spreadsheets/d/1vfAni3XgbPsL_Ho7IHZ9py_RLtcB3uUOQdmRE3yoeA4/edit?usp=drive_link)
+- [Synthea Overview](https://mitre.github.io/fhir-for-research/modules/synthea-overview)
+
 ## Options to Follow Along with the Hands On Module
 
 ### *Option 1.* Link to Notebook in Google Colab *(preferred)*:
