@@ -5,6 +5,8 @@
 - [Synthea Generic Module Builder](https://synthetichealth.github.io/module-builder/)
 - [Synthea Github Page](https://github.com/synthetichealth/synthea)
 - [Synthea Customizer](https://synthetichealth.github.io/spt/#/customizer)
+- [SNOMED CT Code Browser](https://browser.ihtsdotools.org/?perspective=full&conceptId1=404684003&edition=MAIN/SNOMEDCT-US/2025-03-01&release=&languages=en)
+- [RxNav RxNorm Code Browser](https://mor.nlm.nih.gov/RxNav/)
 - [Cross-sectional Pediatric Myopia Study](https://pmc.ncbi.nlm.nih.gov/articles/PMC6120514/)
 - [Google Sheet w/ Probablity Calculations for Distributed Transitions in Myopia Module](https://docs.google.com/spreadsheets/d/1vfAni3XgbPsL_Ho7IHZ9py_RLtcB3uUOQdmRE3yoeA4/edit?usp=drive_link)
 - [Synthea Overview](https://mitre.github.io/fhir-for-research/modules/synthea-overview)
