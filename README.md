@@ -1,4 +1,4 @@
-# ARCH Workshop: Generating Synthetic EHR Data for Research [WS7]
+# ARCH Workshop: Generating Synthetic EHR Data for Research [WS6]
 
 ### Links to Resources used During Workshop
 
